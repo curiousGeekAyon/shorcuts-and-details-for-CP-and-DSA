@@ -1,0 +1,25 @@
+/*package whatever //do not write package name here */
+
+import java.io.*;
+import java.util.*;
+class GFG {
+	public static void main (String[] args) {
+	     TreeMap<Integer, String> treeMap = new TreeMap<>();
+        treeMap.put(1, "One");
+        treeMap.put(3, "Three");
+        treeMap.put(5, "Five");
+        treeMap.put(7, "Seven");
+
+        int currentElement = 4;
+
+        // Find the element just less than or equal to the current element
+        Integer floorKey = treeMap.floorKey(currentElement);
+        
+        if (floorKey != null) {
+            String result = treeMap.get(floorKey);
+            System.out.println("Element just less than or equal to " + currentElement + ": " + result);
+        } else {
+            System.out.println("No element found that is less than or equal to " + currentElement);
+        }
+    }
+	}
