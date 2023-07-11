@@ -1,0 +1,22 @@
+import java.util.TreeSet;
+
+public class TreeSetExample {
+    public static void main(String[] args) {
+        TreeSet<Integer> treeSet = new TreeSet<>();
+        treeSet.add(1);
+        treeSet.add(3);
+        treeSet.add(5);
+        treeSet.add(7);
+
+        int currentElement = 4;
+
+        // Find the element equal to or the next maximum value
+        Integer ceilingElement = treeSet.ceiling(currentElement);
+
+        if (ceilingElement != null) {
+            System.out.println("Element equal to or the next maximum to " + currentElement + ": " + ceilingElement);
+        } else {
+            System.out.println("No element found that is equal to or the next maximum to " + currentElement);
+        }
+    }
+}
