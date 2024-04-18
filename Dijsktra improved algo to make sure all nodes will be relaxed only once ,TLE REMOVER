@@ -1,0 +1,84 @@
+class Solution {
+    public int[] minimumTime(int n, int[][] edges, int[] disappear) {
+        Graph g = new Graph(n);
+        for(int i=0;i<edges.length;i++)
+            {
+                 g.addEdge(edges[i][0],edges[i][1], edges[i][2]);
+            }
+      int[] res= g.shortestPath(0,disappear);
+       for(int i=0;i<n;i++)
+        {
+            if(res[i]==Integer.MAX_VALUE)
+                {
+                    res[i]=-1;
+                }
+        }
+      return res;
+    }
+    class Graph {
+    private int V;
+    private List<List<iPair>> adj;
+ 
+    Graph(int V) {
+        this.V = V;
+        adj = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            adj.add(new ArrayList<>());
+        }
+    }
+ 
+    void addEdge(int u, int v, int w) {
+        adj.get(u).add(new iPair(v, w));
+        adj.get(v).add(new iPair(u, w));
+    }
+ 
+    public int [] shortestPath(int src,int []disappear) {
+        PriorityQueue<iPair> pq = new PriorityQueue<>(V, Comparator.comparingInt(o -> o.first));
+        int[] dist = new int[V];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+ 
+        pq.add(new iPair(0, src));
+        dist[src] = 0;
+ 
+        while (!pq.isEmpty()) {
+            iPair currentRelaxing=pq.poll();
+            int u = currentRelaxing.second;
+            int timeWhenPushed=currentRelaxing.first;
+            if(dist[u]<timeWhenPushed)
+            {
+                continue; // if current node's neighbours are already been relaxed then we don't need to realx then again 
+                           // no when this will happen ?
+                          // when there is path from another parent from which current node has been visited in less time 
+                          // but before that there was another parent from which this node already been relaxed hence added in the priority queue but now this is of no use 
+                          // if we now relax it's adjacent we are sure that they will never been added in the prirotity queue because we already have the lesser cost to reach to it 
+                          // because we have reached to the parent to lesser cost hence this paths of relaxing these neighbours useles
+                          // that's why before relaxing  the current edge we need to make sure that it's not been relaxed already 
+                          // to check that we see that "first" variable which contains the time when it get's pushed ,and we have dist array which is containing the minimum time/dist
+                          // time of pushing is not  less than dist[currentrelaxingnode] then we will definately not do anything ,it will save our time drastically
+                          // This enhancement will also makes sure that all nodes will be relaxed EXACTLY Once
+            }
+            for (iPair v : adj.get(u)) {
+                if (dist[v.first] > dist[u] + v.second && disappear[v.first]>dist[u] + v.second) {
+                    dist[v.first] = dist[u] + v.second;
+                    pq.add(new iPair(dist[v.first], v.first));
+                }
+            }
+        }
+        return dist;
+ 
+        // System.out.println("Vertex Distance from Source");
+        // for (int i = 0; i < V; i++) {
+        //     System.out.println(i + "\t\t" + dist[i]);
+        // }
+    }
+ 
+    static class iPair {
+        int first, second;
+ 
+        iPair(int first, int second) {
+            this.first = first;
+            this.second = second;
+        }
+    }
+}
+}
